@@ -13,26 +13,26 @@
                   <HBox spacing="10.0">
                      <children>
                         <Button mnemonicParsing="false" text="&lt;-" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="&gt;" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ToggleSong" text="&gt;" />
                         <Button layoutX="60.0" layoutY="10.0" mnemonicParsing="false" text="-&gt;" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Slider />
+                        <Slider fx:id="volumeSlider" blockIncrement="0.01" max="1.0" value="0.5" />
                      </children></HBox>
                </children>
             </VBox>
             <HBox HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="nowPlaying" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="(none) ... Is Playing" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox spacing="10.0">
                <children>
-                  <Label text="Label" />
-                  <TextField prefWidth="100.0" />
-                  <Button mnemonicParsing="false" text="Filter" />
+                  <Label text="Filter:" />
+                  <TextField fx:id="filterValue" onAction="#FilterSongList" prefWidth="100.0" />
+                  <Button mnemonicParsing="false" onAction="#FilterSongList" text="Filter" />
                </children>
                <padding>
                   <Insets top="25.0" />
@@ -48,15 +48,10 @@
             <VBox prefHeight="200.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label text="Playlists" />
-                  <TableView prefHeight="300.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="playlistTable" prefHeight="300.0" prefWidth="200.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="New..." />
+                        <Button mnemonicParsing="false" onAction="#NewPlaylist" text="New..." />
                         <Button mnemonicParsing="false" text="Edit..." />
                         <Button mnemonicParsing="false" text="Delete" />
                      </children></HBox>
@@ -65,7 +60,7 @@
             <VBox prefHeight="200.0" prefWidth="175.0" spacing="5.0">
                <children>
                   <Label text="Songs on Playlist" />
-                  <ListView prefHeight="300.0" prefWidth="200.0" />
+                  <ListView fx:id="songsInPlaylistList" prefHeight="300.0" prefWidth="200.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Button mnemonicParsing="false" text="Up" />
@@ -82,24 +77,19 @@
             <VBox prefHeight="200.0" prefWidth="31.0" spacing="5.0">
                <children>
                   <Label />
-                  <Button mnemonicParsing="false" text="&lt;-" />
+                  <Button mnemonicParsing="false" onAction="#AddSongToPlaylist" text="&lt;-" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="300.0" spacing="5.0">
                <children>
                   <Label text="Songs" />
-                  <TableView prefHeight="300.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="songTable" prefHeight="300.0" prefWidth="200.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="New..." />
-                        <Button mnemonicParsing="false" text="Edit..." />
-                        <Button mnemonicParsing="false" text="Delete" />
-                        <Button mnemonicParsing="false" text="Close">
+                        <Button mnemonicParsing="false" onAction="#NewSong" text="New..." />
+                        <Button mnemonicParsing="false" onAction="#EditSong" text="Edit..." />
+                        <Button mnemonicParsing="false" onAction="#DeleteSong" text="Delete" />
+                        <Button mnemonicParsing="false" onAction="#CloseApplication" text="Close">
                            <HBox.margin>
                               <Insets left="72.0" />
                            </HBox.margin>
