@@ -49,8 +49,8 @@
                      <HBox.margin>
                         <Insets top="4.0" />
                      </HBox.margin></Label>
-                  <TextField fx:id="filterValue" onAction="#FilterSongList" prefWidth="100.0" />
-                  <Button mnemonicParsing="false" onAction="#FilterSongList" text="Filter" />
+                  <TextField fx:id="filterValue" onAction="#PopulateSongTable" prefWidth="100.0" />
+                  <Button mnemonicParsing="false" onAction="#PopulateSongTable" text="Filter" />
                </children>
                <padding>
                   <Insets top="25.0" />
@@ -86,9 +86,9 @@
                      <children>
                         <Button mnemonicParsing="false" text="Up" />
                         <Button mnemonicParsing="false" text="Down" />
-                        <Button mnemonicParsing="false" onAction="#RemoveSongFromPlaylist" text="Delete">
+                        <Button mnemonicParsing="false" onAction="#RemoveSongFromPlaylist" text="Remove">
                            <HBox.margin>
-                              <Insets left="20.0" />
+                              <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
                      </children>
