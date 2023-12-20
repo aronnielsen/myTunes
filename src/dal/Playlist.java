@@ -1,7 +1,6 @@
 package dal;
 
 import be.PlaylistDataModel;
-import be.SongDataModel;
 import be.SongsInPlaylistDataModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,6 +63,51 @@ public class Playlist {
         }
     }
 
+    public static void EditPlaylist(int id, String title) {
+        String query = "UPDATE playlist SET playlist_title=? WHERE playlist_id=?";
+
+        try (Connection conn = DriverManager.getConnection(Config.getUrl(), Config.getUser(), Config.getPassword());
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, title);
+            pstmt.setInt(2, id);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error updating song in the database.");
+        }
+    }
+
+    public static void DeleteAllSongsFromPlaylist(int playlistID) {
+        String query = "DELETE FROM song_in_playlist WHERE sip_playlist=?";
+
+        try (Connection conn = DriverManager.getConnection(Config.getUrl(), Config.getUser(), Config.getPassword());
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, playlistID);
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error inserting song into the database.");
+        }
+    }
+
+    public static void DeletePlaylist(int playlistID) {
+        DeleteAllSongsFromPlaylist(playlistID);
+
+        String query = "DELETE FROM playlist WHERE playlist_id=?";
+
+        try (Connection conn = DriverManager.getConnection(Config.getUrl(), Config.getUser(), Config.getPassword());
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, playlistID);
+
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error inserting song into the database.");
+        }
+    }
+
     public static void AddSongToPlaylist(int songId, int playlistId, int order) {
         String query = "INSERT INTO song_in_playlist (sip_song, sip_playlist, sip_order) VALUES (?,?,?)";
 
@@ -80,8 +124,19 @@ public class Playlist {
         }
     }
 
-    public static void RemoveSongFromPlaylist(int id) {
+    public static void RemoveSongFromPlaylist(int songId, int playlistId) {
+        String query = "DELETE FROM song_in_playlist WHERE sip_song=? AND sip_playlist=?";
 
+        try (Connection conn = DriverManager.getConnection(Config.getUrl(), Config.getUser(), Config.getPassword());
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, songId);
+            pstmt.setInt(2, playlistId);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error deleting song from the database.");
+        }
     }
 
     public static ObservableList<SongsInPlaylistDataModel> GetSongsInPlaylist(int id) {

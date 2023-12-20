@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="432.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
@@ -12,10 +13,24 @@
                <children>
                   <HBox spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="&lt;-" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ToggleSong" text="&gt;" />
-                        <Button layoutX="60.0" layoutY="10.0" mnemonicParsing="false" text="-&gt;" />
+                        <Button mnemonicParsing="false" text="⪻">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin></Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ToggleSong" text="⫸">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="60.0" layoutY="10.0" mnemonicParsing="false" text="⪼">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox>
                      <children>
@@ -30,13 +45,19 @@
             </HBox>
             <HBox spacing="10.0">
                <children>
-                  <Label text="Filter:" />
+                  <Label text="Filter:">
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin></Label>
                   <TextField fx:id="filterValue" onAction="#FilterSongList" prefWidth="100.0" />
                   <Button mnemonicParsing="false" onAction="#FilterSongList" text="Filter" />
                </children>
                <padding>
                   <Insets top="25.0" />
                </padding>
+               <HBox.margin>
+                  <Insets right="12.0" />
+               </HBox.margin>
             </HBox>
          </children>
          <padding>
@@ -52,8 +73,8 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#NewPlaylist" text="New..." />
-                        <Button mnemonicParsing="false" text="Edit..." />
-                        <Button mnemonicParsing="false" text="Delete" />
+                        <Button mnemonicParsing="false" onAction="#EditPlaylist" text="Edit..." />
+                        <Button mnemonicParsing="false" onAction="#DeletePlaylist" text="Delete" />
                      </children></HBox>
                </children>
             </VBox>
@@ -65,7 +86,7 @@
                      <children>
                         <Button mnemonicParsing="false" text="Up" />
                         <Button mnemonicParsing="false" text="Down" />
-                        <Button mnemonicParsing="false" text="Delete">
+                        <Button mnemonicParsing="false" onAction="#RemoveSongFromPlaylist" text="Delete">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>

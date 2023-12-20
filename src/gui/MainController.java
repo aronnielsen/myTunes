@@ -4,33 +4,19 @@ import be.PlaylistDataModel;
 import be.SongDataModel;
 import be.SongsInPlaylistDataModel;
 import bl.Logic;
-import dal.Song;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.*;
 
 public class MainController {
     public TableView playlistTable;
@@ -195,6 +181,10 @@ public class MainController {
     }
 
     public void ToggleSong(ActionEvent actionEvent) {
+        if (mediaPlayer == null) {
+            return;
+        }
+
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
         } else {
@@ -232,6 +222,15 @@ public class MainController {
         Logic.generatePlaylistTable(playlistTable, this);
     }
 
+    public void EmptySongsInPlaylistList() {
+        Logic.emptySongsInPlaylistList(songsInPlaylistList, this);
+    }
+
+    public void PopulateSongsInPlaylist() {
+        PlaylistDataModel playlist = (PlaylistDataModel) playlistTable.getSelectionModel().getSelectedItem();
+        Logic.generateSongsInPlaylistList(playlist.getPlaylistID(), songsInPlaylistList, this);
+    }
+
     public void GetSongsInPlaylist(PlaylistDataModel playlist) {
         Logic.generateSongsInPlaylistList(playlist.getPlaylistID(), songsInPlaylistList, this);
     }
@@ -240,5 +239,49 @@ public class MainController {
         SongDataModel song = (SongDataModel) songTable.getSelectionModel().getSelectedItem();
         PlaylistDataModel playlist = (PlaylistDataModel) playlistTable.getSelectionModel().getSelectedItem();
         Logic.HandleAddSongToPlaylist(song, playlist, playlist.getPlaylistSongCount());
+        PopulateSongsInPlaylist();
+    }
+
+    public void RemoveSongFromPlaylist(ActionEvent actionEvent) {
+        SongsInPlaylistDataModel song = (SongsInPlaylistDataModel) songsInPlaylistList.getSelectionModel().getSelectedItem();
+        PlaylistDataModel playlist = (PlaylistDataModel) playlistTable.getSelectionModel().getSelectedItem();
+        Logic.HandleRemoveSongFromPlaylist(song, playlist);
+        PopulateSongsInPlaylist();
+    }
+
+    public void EditPlaylist(ActionEvent actionEvent) {
+        PlaylistDataModel playlist = (PlaylistDataModel) playlistTable.getSelectionModel().getSelectedItem();
+
+        Stage popupStage = new Stage();
+        popupStage.setTitle("Add playlist");
+
+        VBox formLayout = new VBox(10);
+        formLayout.setPadding(new Insets(20));
+
+        TextField playlistTitle = new TextField();
+        playlistTitle.setPromptText("Enter playlist title");
+        playlistTitle.setText(playlist.getPlaylistTitle());
+
+        Button submitButton = new Button("Submit");
+        submitButton.setOnAction(e -> {
+            bl.Logic.handleEditPlaylistSubmit(playlist.getPlaylistID(), playlistTitle.getText());
+            PopulatePlaylistTable();
+            popupStage.close();
+        });
+
+        formLayout.getChildren().addAll(playlistTitle, submitButton);
+
+        Scene popupScene = new Scene(formLayout, 250, 350);
+        popupStage.setScene(popupScene);
+
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.showAndWait();
+    }
+
+    public void DeletePlaylist(ActionEvent actionEvent) {
+        PlaylistDataModel playlist = (PlaylistDataModel) playlistTable.getSelectionModel().getSelectedItem();
+        Logic.HandleDeletePlaylist(playlist.getPlaylistID());
+        PopulatePlaylistTable();
+        EmptySongsInPlaylistList();
     }
 }

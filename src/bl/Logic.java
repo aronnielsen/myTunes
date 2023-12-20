@@ -7,6 +7,7 @@ import dal.Playlist;
 import dal.Song;
 import gui.MainController;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.*;
@@ -14,13 +15,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Logic {
     public static void handleSubmit(String title, String artist, String genre, String length, File file, Stage popup) {
@@ -94,12 +93,12 @@ public class Logic {
 
         TableColumn<SongDataModel, String> col1 = new TableColumn<>("Title");
         col1.setCellValueFactory(new PropertyValueFactory<>("songTitle"));
-        TableColumn<SongDataModel, String> col4 = new TableColumn<>("Artist");
-        col4.setCellValueFactory(new PropertyValueFactory<>("songArtist"));
-        TableColumn<SongDataModel, String> col2 = new TableColumn<>("Genre");
-        col2.setCellValueFactory(new PropertyValueFactory<>("songGenre"));
-        TableColumn<SongDataModel, String> col3 = new TableColumn<>("Length");
-        col3.setCellValueFactory(new PropertyValueFactory<>("songLength"));
+        TableColumn<SongDataModel, String> col2 = new TableColumn<>("Artist");
+        col2.setCellValueFactory(new PropertyValueFactory<>("songArtist"));
+        TableColumn<SongDataModel, String> col3 = new TableColumn<>("Genre");
+        col3.setCellValueFactory(new PropertyValueFactory<>("songGenre"));
+        TableColumn<SongDataModel, String> col4 = new TableColumn<>("Length");
+        col4.setCellValueFactory(new PropertyValueFactory<>("songLength"));
 
         if (songTable.getColumns().isEmpty()) {
             songTable.getColumns().addAll(col1, col2, col3, col4);
@@ -217,5 +216,27 @@ public class Logic {
         if (song.getSongID() > -1) {
             Playlist.AddSongToPlaylist(song.getSongID(), playlist.getPlaylistID(), order);
         }
+    }
+
+    public static void HandleRemoveSongFromPlaylist(SongsInPlaylistDataModel song, PlaylistDataModel playlist) {
+        if (song.getSongID() > -1) {
+            Playlist.RemoveSongFromPlaylist(song.getSongID(), playlist.getPlaylistID());
+        }
+    }
+
+    public static void HandleDeletePlaylist(int playlistID) {
+        Playlist.DeletePlaylist(playlistID);
+    }
+
+    public static void handleEditPlaylistSubmit(int id, String title) {
+        if (!title.isEmpty()) {
+            Playlist.EditPlaylist(id, title);
+        }
+    }
+
+    public static void emptySongsInPlaylistList(ListView songsInPlaylistList, MainController main) {
+        ObservableList<SongsInPlaylistDataModel> items = FXCollections.observableArrayList();
+
+        songsInPlaylistList.setItems(items);
     }
 }
