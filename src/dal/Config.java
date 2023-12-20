@@ -2,14 +2,15 @@ package dal;
 
 public class Config {
     public static String getUrl() {
-        return "jdbc:mysql://localhost:3306/my_tunes";
+        return "jdbc:mysql://gator3313.hostgator.com/aronniel_my_tunes";
     }
 
     public static String getUser() {
-        return "admin";
+        return "aronniel_mytunes";
     }
 
     public static String getPassword() {
-        return "admin";
+        return "putZet-juwfak-1kubpy";
     }
+
 }

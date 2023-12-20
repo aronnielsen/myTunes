@@ -108,19 +108,17 @@ public class MainController {
             public TableRow<SongDataModel> call(TableView<SongDataModel> tableView) {
                 TableRow<SongDataModel> row = new TableRow<>();
                 ContextMenu contextMenu = new ContextMenu();
-                MenuItem item1 = new MenuItem("Play");
 
+                MenuItem item1 = new MenuItem("Play");
                 item1.setOnAction(e -> {
                     SongDataModel rowData = row.getItem();
                     playSong(rowData.getSongPath().replace('\\', '/'), rowData.getSongTitle(), rowData.getSongArtist());
                 });
 
                 MenuItem item2 = new MenuItem("Edit");
-
                 item2.setOnAction(e -> EditSong());
 
                 MenuItem item3 = new MenuItem("Delete");
-
                 item3.setOnAction(e -> {
                     try {
                         DeleteSong();
